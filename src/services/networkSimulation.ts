@@ -38,11 +38,15 @@ class PeerNetworkService {
     this.onMessageCallback = onMessage;
     this.isHost = isHost;
 
-    const peerId = isHost ? `${ROOM_ID_PREFIX}${roomId}` : undefined; // Host claims specific ID
-
-    this.peer = new Peer(peerId, {
+    const options = {
       debug: 1
-    });
+    };
+
+    if (isHost) {
+        this.peer = new Peer(`${ROOM_ID_PREFIX}${roomId}`, options);
+    } else {
+        this.peer = new Peer(options);
+    }
 
     this.peer.on('open', (id) => {
       console.log(`[Network] Connected to PeerServer. My ID: ${id}`);
@@ -149,7 +153,7 @@ class PeerNetworkService {
   }
 
   // General broadcast
-  broadcast(roomId: string, message: NetworkMessage) {
+  broadcast(_roomId: string, message: NetworkMessage) {
     if (this.isHost) {
       // Host broadcasts to all guests
       this.connections.forEach(conn => {
