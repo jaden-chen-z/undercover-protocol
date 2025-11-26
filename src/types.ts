@@ -58,7 +58,7 @@ export interface WordPairData {
 }
 
 export interface NetworkMessage {
-  type: 'JOIN' | 'SYNC_STATE' | 'START_DEALING' | 'START_VOTING' | 'SUBMIT_VOTES' | 'NEXT_ROUND' | 'CONFIRM_IDENTITY' | 'REQUEST_CONFIRM';
+  type: 'JOIN' | 'SYNC_STATE' | 'START_DEALING' | 'START_VOTING' | 'SUBMIT_VOTES' | 'NEXT_ROUND' | 'CONFIRM_IDENTITY' | 'REQUEST_CONFIRM' | 'ROOM_CLOSED';
   payload: Player | GameState | any;
   roomId: string;
 }

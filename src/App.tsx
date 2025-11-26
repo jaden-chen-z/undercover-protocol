@@ -24,11 +24,57 @@ function App() {
     gameStateRef.current = gameState;
   }, [gameState]);
 
+  const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 重置非活跃计时器
+  const resetInactivityTimer = useCallback(() => {
+    if (inactivityTimerRef.current) {
+      clearTimeout(inactivityTimerRef.current);
+    }
+
+    // 只有房主且游戏正在进行时才设置计时器
+    if (gameState && gameState.hostId === localPlayerId) {
+      inactivityTimerRef.current = setTimeout(() => {
+        // 30分钟无操作，自动解散
+        network.broadcast(gameState.roomId, {
+          type: 'ROOM_CLOSED',
+          payload: { reason: 'timeout' },
+          roomId: gameState.roomId
+        });
+        
+        // 房主自己也退出
+        network.close();
+        setGameState(null);
+        setLocalPlayerId(null);
+        alert('房间长时间未操作，已自动解散');
+      }, 30 * 60 * 1000); // 30 minutes
+    }
+  }, [gameState, localPlayerId]);
+
+  // 监听状态变化，重置计时器
+  useEffect(() => {
+    resetInactivityTimer();
+    return () => {
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current);
+      }
+    };
+  }, [gameState, resetInactivityTimer]);
+
   // 处理网络消息
   useEffect(() => {
     if (!gameState?.roomId) return;
 
     const handleMessage = (msg: NetworkMessage) => {
+      if (msg.type === 'ROOM_CLOSED') {
+        // 收到房间关闭消息
+        alert('房间长时间未操作，已自动解散');
+        network.close();
+        setGameState(null);
+        setLocalPlayerId(null);
+        return;
+      }
+      
       if (msg.type === 'SYNC_STATE') {
         setGameState(msg.payload as GameState);
       } else if (msg.type === 'JOIN') {

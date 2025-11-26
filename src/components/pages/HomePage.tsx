@@ -53,7 +53,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onCreateRoom, onJoinRoom }) 
       backgroundColor: COLORS.bgMain,
       // 使用 dvh 确保在移动端浏览器中填满可见区域
       height: '100dvh', 
-      minHeight: '-webkit-fill-available'
+      minHeight: '-webkit-fill-available',
+      display: 'flex',
+      flexDirection: 'column'
     }}>
       {/* 顶部 Header - 保持简洁 */}
       <div style={{ padding: 'min(2rem, 5vw) min(2rem, 5vw) min(1rem, 2.5vw)', flexShrink: 0 }}>
@@ -84,7 +86,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onCreateRoom, onJoinRoom }) 
       </div>
 
       {/* 主要功能区 - 可滚动区域，确保键盘弹起时可以滚动查看内容 */}
-      <div className="scrollable-content" style={{ padding: '0 min(2rem, 5vw) min(2rem, 5vw)', display: 'flex', flexDirection: 'column' }}>
+      <div className="scrollable-content" style={{ 
+        padding: '0 min(2rem, 5vw) min(2rem, 5vw)', 
+        display: 'flex', 
+        flexDirection: 'column',
+        flex: 1,
+        overflowY: 'auto'
+      }}>
         {/* CREATE ROOM CARD */}
         <div 
           onClick={() => {
