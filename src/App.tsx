@@ -304,11 +304,8 @@ function App() {
     if (gameState.phase !== GamePhase.DEALING) return;
 
     // 检查是否所有人都已确认
-    const activePlayers = gameState.players.filter(p => p.alive || p.role !== 'CIVILIAN' || p.word !== null); 
-    // 实际上，参与本局游戏的玩家才需要确认。
-    // 简单起见，假设 players 列表里所有在场的人（包括观察者？）都需要确认吗？
-    // 不，只有参与游戏的人才发了牌。
-    // 我们的 assignRolesAndWords 逻辑是对所有 players 进行分配。
+    // 参与本局游戏的玩家才需要确认
+    // 我们的 assignRolesAndWords 逻辑是对所有 players 进行分配
     // 所以 totalPlayers 就是 gameState.players.length
     
     const totalPlayers = gameState.players.length;
@@ -437,13 +434,13 @@ function App() {
   // Check for mid-game joiners (Observers)
   const localPlayer = gameState.players.find(p => p.id === localPlayerId);
   
-  const isMidGame = [
-    GamePhase.DEALING, 
-    GamePhase.PLAYING, 
-    GamePhase.VOTING, 
-    GamePhase.ELIMINATION_FEEDBACK, 
-    GamePhase.ENDED
-  ].includes(gameState.phase);
+  const isMidGame = (
+    gameState.phase === GamePhase.DEALING || 
+    gameState.phase === GamePhase.PLAYING || 
+    gameState.phase === GamePhase.VOTING || 
+    gameState.phase === GamePhase.ELIMINATION_FEEDBACK || 
+    gameState.phase === GamePhase.ENDED
+  );
   
   // Observer condition: Game is running AND player has no word (and is not BLANK role)
   // Default new players are CIVILIAN with null word

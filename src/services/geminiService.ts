@@ -57,7 +57,7 @@ const WORD_PAIRS = [
   { civilian: '腾云驾雾', undercover: '呼风唤雨' }
 ];
 
-export const generateWordPair = async (difficulty: 'easy' | 'hard' = 'easy'): Promise<WordPairData> => {
+export const generateWordPair = async (_difficulty: 'easy' | 'hard' = 'easy'): Promise<WordPairData> => {
   // 模拟异步操作，保持接口兼容
   return new Promise((resolve) => {
     const randomIndex = Math.floor(Math.random() * WORD_PAIRS.length);

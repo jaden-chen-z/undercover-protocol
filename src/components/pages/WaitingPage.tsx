@@ -9,7 +9,7 @@ import type { GameState } from '../../types';
 interface WaitingPageProps {
   gameState: GameState;
   localPlayerId: string;
-  onStartDealing: () => void;
+  onStartDealing?: () => void;
   onModifySettings: () => void;
   onLeaveRoom: () => void;
   isLoading?: boolean;
@@ -18,7 +18,6 @@ interface WaitingPageProps {
 export const WaitingPage: React.FC<WaitingPageProps> = ({
   gameState,
   localPlayerId,
-  onStartDealing,
   onModifySettings,
   onLeaveRoom,
   isLoading = false
@@ -29,13 +28,13 @@ export const WaitingPage: React.FC<WaitingPageProps> = ({
   const maxCapacity = 12; 
   const canStart = currentCount >= 2; // 至少2人即可开始配置
   
-  const isGameRunning = [
-    GamePhase.DEALING, 
-    GamePhase.PLAYING, 
-    GamePhase.VOTING, 
-    GamePhase.ELIMINATION_FEEDBACK,
-    GamePhase.ENDED
-  ].includes(gameState.phase);
+  const isGameRunning = (
+    gameState.phase === GamePhase.DEALING || 
+    gameState.phase === GamePhase.PLAYING || 
+    gameState.phase === GamePhase.VOTING || 
+    gameState.phase === GamePhase.ELIMINATION_FEEDBACK ||
+    gameState.phase === GamePhase.ENDED
+  );
 
   const slots = Array.from({ length: maxCapacity }).map((_, i) => {
     if (i < gameState.players.length) {

@@ -2,7 +2,6 @@
 import React from 'react';
 import { COLORS } from '../../constants';
 import { ActionCircle } from '../ActionCircle';
-import { VerticalBars } from '../VerticalBars';
 import type { GameState } from '../../types';
 
 interface EliminationFeedbackPageProps {

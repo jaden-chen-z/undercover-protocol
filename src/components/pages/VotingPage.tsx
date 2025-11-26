@@ -34,9 +34,9 @@ export const VotingPage: React.FC<VotingPageProps> = ({
     }));
   };
 
-  const handleClear = () => {
-    setVotes(alivePlayers.reduce((acc, p) => ({ ...acc, [p.id]: 0 }), {}));
-  };
+  // const handleClear = () => {
+  //   setVotes(alivePlayers.reduce((acc, p) => ({ ...acc, [p.id]: 0 }), {}));
+  // };
 
   const handleConfirm = () => {
     onConfirmVotes(votes);

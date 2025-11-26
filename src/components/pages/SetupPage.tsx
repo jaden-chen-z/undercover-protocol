@@ -13,20 +13,19 @@ interface SetupPageProps {
   onCancel: () => void;
   fixedTotalPlayers?: number;
   confirmText?: string;
-  roomId: string;
+  roomId?: string;
 }
 
 export const SetupPage: React.FC<SetupPageProps> = ({ 
   onConfirm, 
   onCancel,
   fixedTotalPlayers,
-  confirmText = 'START',
-  roomId
+  confirmText = 'START'
 }) => {
   const [totalPlayers, setTotalPlayers] = useState(fixedTotalPlayers || 6);
   const [undercoverCount, setUndercoverCount] = useState(1);
   const [blankCount, setBlankCount] = useState(0);
-  const [activeField, setActiveField] = useState<'total' | 'undercover' | 'blank'>(
+  const [activeField, setActiveField] = useState<'total' | 'civilian' | 'undercover' | 'blank'>(
     fixedTotalPlayers ? 'undercover' : 'total'
   );
 
@@ -56,7 +55,7 @@ export const SetupPage: React.FC<SetupPageProps> = ({
 
   const renderField = (id: 'total' | 'civilian' | 'undercover' | 'blank', label: string, value: number) => {
     const isActive = activeField === id;
-    const isLocked = id === 'total' || id === 'civilian' || (id === 'total' && !!fixedTotalPlayers);
+    const isLocked = (id === 'total' && !!fixedTotalPlayers) || id === 'total' || id === 'civilian';
     
     return (
       <div 

@@ -7,6 +7,7 @@ export const COLORS = {
     textMuted: '#7A7F75',   // Muted text
     textLight: '#E8EAE3',   // Light text for dark backgrounds
     lineColor: '#A3A69A',   // Divider lines
+    borderColor: '#A3A69A', // Border color (same as lineColor)
   };
   
   export const DEFAULT_SETTINGS = {
