@@ -4,39 +4,60 @@
 /* Tailwind CSS v4 导入方式 */
 @import 'tailwindcss';
 
-/* 移动端 9:16 宽高比设置 */
+/* 
+  移动端优化方案:
+  1. 使用 dvh (dynamic viewport height) 解决地址栏遮挡问题
+  2. 禁用 body 滚动，防止页面被拖动
+  3. 使用 fixed 定位确保全屏
+*/
 html, body {
   margin: 0;
   padding: 0;
   width: 100vw;
+  /* 优先使用 dvh，降级使用 vh */
   height: 100vh;
+  height: 100dvh; 
   overflow: hidden;
+  position: fixed; /* 防止 iOS 回弹效果 */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overscroll-behavior: none; /* 禁用拉动刷新/回弹 */
 }
 
 #root {
-  width: 100vw;
-  height: 100vh;
-  max-width: 100vw;
-  max-height: 100vh;
+  width: 100%;
+  height: 100%;
   margin: 0 auto;
   position: relative;
   background-color: #D6D8CB;
   font-family: 'Space Mono', monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* 确保根容器也是满屏且无溢出 */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-/* 移动端容器 */
-.mobile-container {
-  width: 100vw;
-  max-width: 100vw;
-  aspect-ratio: 9 / 16;
-  min-height: 100vh;
-  margin: 0 auto;
-  position: relative;
+/* 通用页面容器，用于替代之前的 style={{ height: '100vh' }} */
+.page-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* 处理键盘弹起时的布局 */
+  transition: height 0.3s ease; 
+}
+
+/* 可滚动的内容区域 */
+.scrollable-content {
+  flex: 1;
   overflow-y: auto;
-  overflow-x: hidden;
-  background-color: #D6D8CB;
+  -webkit-overflow-scrolling: touch; /* iOS 平滑滚动 */
+  overscroll-behavior-y: contain;
 }
 
 /* 数字显示样式（参考图片风格） */

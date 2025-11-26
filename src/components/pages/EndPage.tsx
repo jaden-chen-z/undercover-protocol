@@ -48,15 +48,9 @@ export const EndPage: React.FC<EndPageProps> = ({
     });
 
   return (
-    <div style={{ 
+    <div className="page-container" style={{ 
       backgroundColor: COLORS.bgMain,
-      width: '100vw',
-      height: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      fontFamily: 'Space Mono, monospace',
-      overflow: 'hidden',
-      position: 'relative'
+      height: '100dvh'
     }}>
       <div style={{ position: 'absolute', top: '2rem', right: '2rem', textAlign: 'right', zIndex: 10 }}>
         <div style={{ fontSize: '0.75rem', color: isCiviliansWin ? COLORS.textMuted : 'rgba(255,255,255,0.6)', letterSpacing: '0.1em', marginBottom: '0.25rem' }}>房间号</div>
@@ -69,7 +63,8 @@ export const EndPage: React.FC<EndPageProps> = ({
         minHeight: '200px',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        flexShrink: 0
       }}>
         <div style={{ fontSize: '1.25rem', opacity: 0.6, marginBottom: '0.5rem' }}>任务结算</div>
         <div style={{ fontSize: '3.5rem', fontWeight: '700', lineHeight: 0.9 }}>
@@ -77,7 +72,7 @@ export const EndPage: React.FC<EndPageProps> = ({
         </div>
       </div>
 
-      <div style={{ flex: 1, overflowY: 'auto' }}>
+      <div className="scrollable-content">
         {sortedPlayers.map((player) => (
           <div key={player.id} style={{ 
             padding: '1rem 2rem', 
@@ -107,7 +102,8 @@ export const EndPage: React.FC<EndPageProps> = ({
         padding: '2rem', 
         display: 'flex', 
         justifyContent: 'space-between', 
-        alignItems: 'center' 
+        alignItems: 'center',
+        flexShrink: 0
       }}>
         <button onClick={onLeaveRoom} style={{ background: 'none', border: 'none', textDecoration: 'underline', color: 'rgba(255,255,255,0.6)', fontSize: '1.5rem' }}>
           {isHost ? '解散房间' : '退出房间'}
