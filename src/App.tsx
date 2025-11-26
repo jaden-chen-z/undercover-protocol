@@ -92,9 +92,10 @@ function App() {
       }
     };
 
-    network.connect(gameState.roomId, handleMessage);
+    const isHost = gameState.hostId === localPlayerId;
+    network.connect(gameState.roomId, handleMessage, isHost);
     return () => network.close();
-  }, [gameState?.roomId, localPlayerId]);
+  }, [gameState?.roomId, localPlayerId, gameState?.hostId]);
 
   // 创建房间
   const handleCreateRoom = useCallback(async (name: string) => {
@@ -135,7 +136,7 @@ function App() {
     };
 
     setGameState(initialState);
-    network.connect(roomId, () => {});
+    // network.connect handled by useEffect
   }, []);
 
   // 加入房间
