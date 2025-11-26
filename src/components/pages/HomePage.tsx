@@ -130,7 +130,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onCreateRoom, onJoinRoom }) 
             <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'flex-end', paddingTop: '2rem' }}>
               <ActionCircle 
                 onClick={(e) => {
-                  e.stopPropagation();
+                  e?.stopPropagation();
                   handleAction();
                 }}
                 disabled={!name.trim()}

@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 
 interface ActionCircleProps {
-  onClick: () => void;
+  onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
   size?: 'xl' | 'lg' | 'sm';
   color?: string;
