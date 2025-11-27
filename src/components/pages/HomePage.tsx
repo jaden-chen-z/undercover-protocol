@@ -18,9 +18,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onCreateRoom, onJoinRoom }) 
   const [isInstructionOpen, setIsInstructionOpen] = useState(false);
   const [readmeContent, setReadmeContent] = useState('');
   
+import readmePath from '../../../public/README.md?url';
+
+// ...
+
   useEffect(() => {
-    // Load README content
-    fetch('/README.md')
+    // Load README content using the imported URL
+    fetch(readmePath)
       .then(res => res.text())
       .then(text => setReadmeContent(text))
       .catch(err => console.error('Failed to load README:', err));
