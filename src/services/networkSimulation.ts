@@ -28,7 +28,7 @@ class PeerNetworkService {
   connect(roomId: string, onMessage: (msg: NetworkMessage) => void, isHost: boolean = false) {
     // Prevent reconnecting if already connected to same room with same role
     if (this.peer && !this.peer.disconnected && !this.peer.destroyed && this.currentRoomId === roomId && this.isHost === isHost) {
-        // Just update callback
+        // Update callback even if already connected, as the callback reference might change
         this.onMessageCallback = onMessage;
         return;
     }

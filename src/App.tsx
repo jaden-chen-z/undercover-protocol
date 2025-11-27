@@ -224,19 +224,11 @@ function App() {
 
     // 关键修复：延迟发送 JOIN 消息，确保 setGameState 触发的 useEffect 已经建立了网络连接（network.connect）
     // 这样才能确保能收到房主回传的 SYNC_STATE 消息
-    // 增加延迟到 1500ms，以防公共服务器连接慢
+    // 增加到 1500ms 确保 PeerJS 连接建立（通常需要 1-2 秒）
     setTimeout(() => {
+      console.log('[App] Sending JOIN message...');
       network.joinRoom(roomId, newPlayer);
     }, 1500);
-    
-    // 再次重试机制
-    setTimeout(() => {
-       if (gameStateRef.current?.hostId === '') {
-           console.log("Retrying join...");
-           network.joinRoom(roomId, newPlayer);
-       }
-    }, 3000);
-
   }, [gameState]);
 
   // 确认创建房间配置 (现在是从设置页直接发牌)
