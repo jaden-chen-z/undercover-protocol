@@ -9,11 +9,23 @@ interface HomePageProps {
   onJoinRoom: (name: string, roomId: string) => void;
 }
 
+import { InstructionModal } from '../InstructionModal';
+
 export const HomePage: React.FC<HomePageProps> = ({ onCreateRoom, onJoinRoom }) => {
   const [name, setName] = useState('');
   const [roomId, setRoomId] = useState('');
   const [mode, setMode] = useState<'create' | 'join'>('create');
+  const [isInstructionOpen, setIsInstructionOpen] = useState(false);
+  const [readmeContent, setReadmeContent] = useState('');
   
+  useEffect(() => {
+    // Load README content
+    fetch('/README.md')
+      .then(res => res.text())
+      .then(text => setReadmeContent(text))
+      .catch(err => console.error('Failed to load README:', err));
+  }, []);
+
   // 移动端键盘优化
   const inputRef = useRef<HTMLInputElement>(null);
   const roomInputRef = useRef<HTMLInputElement>(null);
@@ -59,8 +71,31 @@ export const HomePage: React.FC<HomePageProps> = ({ onCreateRoom, onJoinRoom }) 
     }}>
       {/* 顶部 Header - 保持简洁 */}
       <div style={{ padding: 'min(2rem, 5vw) min(2rem, 5vw) min(1rem, 2.5vw)', flexShrink: 0 }}>
-        <div style={{ fontSize: 'min(1.5rem, 6vw)', letterSpacing: '0.1em', color: COLORS.textMuted, marginBottom: '0.5rem' }}>
-          谁是卧底
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'baseline',
+          marginBottom: '0.5rem'
+        }}>
+          <div style={{ fontSize: 'min(1.5rem, 6vw)', letterSpacing: '0.1em', color: COLORS.textMuted }}>
+            谁是卧底
+          </div>
+          <button 
+            onClick={() => setIsInstructionOpen(true)}
+            style={{ 
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              fontSize: 'min(1.5rem, 6vw)', 
+              letterSpacing: '0.1em', 
+              color: COLORS.textMuted,
+              cursor: 'pointer',
+              textDecoration: 'underline',
+              fontFamily: 'inherit'
+            }}
+          >
+            游戏说明
+          </button>
         </div>
         <div style={{ borderBottom: `2px solid ${COLORS.textMain}`, paddingBottom: 'min(1rem, 2.5vw)' }}>
           <input
@@ -225,6 +260,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onCreateRoom, onJoinRoom }) 
         {/* 底部垫片，确保最后的内容不被某些浏览器的底部栏完全遮挡 */}
         <div style={{ height: '20px' }} />
       </div>
+
+      <InstructionModal 
+        isOpen={isInstructionOpen} 
+        onClose={() => setIsInstructionOpen(false)} 
+        content={readmeContent} 
+      />
     </div>
   );
 };
