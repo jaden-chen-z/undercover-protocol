@@ -1,15 +1,14 @@
-// 页面1：主页（输入昵称，创建/加入房间）- 按钮显著化重构
 import React, { useState, useEffect, useRef } from 'react';
 import { COLORS } from '../../constants';
 import { ActionCircle } from '../ActionCircle';
 import { VerticalBars } from '../VerticalBars';
+import { InstructionModal } from '../InstructionModal';
+import readmePath from '../../../public/README.md?url';
 
 interface HomePageProps {
   onCreateRoom: (name: string) => void;
   onJoinRoom: (name: string, roomId: string) => void;
 }
-
-import { InstructionModal } from '../InstructionModal';
 
 export const HomePage: React.FC<HomePageProps> = ({ onCreateRoom, onJoinRoom }) => {
   const [name, setName] = useState('');
@@ -17,10 +16,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onCreateRoom, onJoinRoom }) 
   const [mode, setMode] = useState<'create' | 'join'>('create');
   const [isInstructionOpen, setIsInstructionOpen] = useState(false);
   const [readmeContent, setReadmeContent] = useState('');
-  
-import readmePath from '../../../public/README.md?url';
-
-// ...
 
   useEffect(() => {
     // Load README content using the imported URL
