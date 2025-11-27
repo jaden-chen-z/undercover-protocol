@@ -224,11 +224,11 @@ function App() {
 
     // 关键修复：延迟发送 JOIN 消息，确保 setGameState 触发的 useEffect 已经建立了网络连接（network.connect）
     // 这样才能确保能收到房主回传的 SYNC_STATE 消息
-    // 增加到 1500ms 确保 PeerJS 连接建立（通常需要 1-2 秒）
+    // 优化：缩短到 1000ms，同时界面显示“连接中...”
     setTimeout(() => {
       console.log('[App] Sending JOIN message...');
       network.joinRoom(roomId, newPlayer);
-    }, 1500);
+    }, 1000);
   }, [gameState]);
 
   // 确认创建房间配置 (现在是从设置页直接发牌)
@@ -459,10 +459,25 @@ function App() {
 
   // 退出/离开房间
   const handleLeaveRoom = useCallback(() => {
+    // 如果是普通玩家离开，应该通知房间移除自己
+    if (gameState && gameState.roomId && localPlayerId && gameState.hostId !== localPlayerId) {
+        // 发送离开消息（需要 networkSimulation 支持，或者利用 PeerJS 的 close 事件）
+        // 这里我们在 networkSimulation 中并未显式实现 LEAVE 消息，
+        // 但 PeerJS 连接断开（close）时，房主端会收到 connection close 事件。
+        // 我们需要在房主端处理这个 close 事件来移除玩家。
+        
+        // 不过，为了更可靠，我们可以广播一个 LEAVE 消息
+        network.broadcast(gameState.roomId, {
+            type: 'LEAVE',
+            payload: localPlayerId,
+            roomId: gameState.roomId
+        } as any); // 临时转换类型，稍后在 types.ts 添加 LEAVE
+    }
+
     network.close();
     setGameState(null);
     setLocalPlayerId(null);
-  }, []);
+  }, [gameState, localPlayerId]);
 
   // 修改设置
   const handleModifySettings = useCallback(() => {

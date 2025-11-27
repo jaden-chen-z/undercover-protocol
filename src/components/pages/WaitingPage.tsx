@@ -83,6 +83,19 @@ export const WaitingPage: React.FC<WaitingPageProps> = ({
           )}
         </div>
         <DigitalNumber value={gameState.roomId} size="xl" color={COLORS.textMain} showDecimal={false} />
+        {/* Show connecting status if not host and player list is empty (initial join) */}
+        {!isHost && currentCount <= 1 && (
+          <div style={{ 
+            marginTop: '0.5rem', 
+            fontSize: '1.5rem', 
+            fontWeight: '700', 
+            color: COLORS.textMuted, 
+            fontFamily: 'Space Mono, monospace',
+            letterSpacing: '0.05em'
+          }}>
+            连接中...
+          </div>
+        )}
         <div style={{ marginTop: '1rem', fontSize: '1.25rem', fontWeight: '700' }}>
           {currentCount}人 已加入 (上限 {maxCapacity}人)
         </div>
