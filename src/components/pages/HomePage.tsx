@@ -16,7 +16,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onCreateRoom, onJoinRoom }) 
   const [roomId, setRoomId] = useState('');
   const [mode, setMode] = useState<'create' | 'join'>('create');
   const [isInstructionOpen, setIsInstructionOpen] = useState(false);
-  const [readmeContent, setReadmeContent] = useState(`
+  const [readmeContent] = useState(`
 # 🕵️‍♂️ 谁是卧底 (Undercover) - 聚会/团建神器
 
 欢迎使用**谁是卧底**在线辅助工具！这是一个专为线下聚会、朋友吃饭、公司团建设计的网页版游戏助手。
