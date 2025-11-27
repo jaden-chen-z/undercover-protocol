@@ -141,7 +141,7 @@ function App() {
     const isHost = gameState.hostId === localPlayerId;
     network.connect(gameState.roomId, handleMessage, isHost);
     return () => network.close();
-  }, [gameState?.roomId, localPlayerId, gameState?.hostId]);
+  }, [gameState?.roomId, localPlayerId, gameState?.hostId === localPlayerId]);
 
   // 创建房间
   const handleCreateRoom = useCallback(async (name: string) => {
